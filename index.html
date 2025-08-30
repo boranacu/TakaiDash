@@ -52,22 +52,6 @@
   <div id="hud">
     <div class="title">🚴‍♂️ TAKAI Dash</div>
     <div>
-      <div>Unique players: <span id="player-count">0</span></div>
-<script>
-async function registerPlayer() {
-  try {
-    const res = await fetch("/api/track", { method: "POST" });
-    const data = await res.json();
-    if (data.totalPlayers !== undefined) {
-      document.getElementById("player-count").textContent = data.totalPlayers;
-    }
-  } catch (err) {
-    console.error("Error tracking player:", err);
-  }
-}
-
-window.addEventListener("load", registerPlayer);
-</script>
       <span class="score">Score: <b id="score">0</b></span>
       &nbsp;|&nbsp;
       <span class="score">Best: <b id="best">0</b></span>
@@ -426,6 +410,7 @@ if (state.phase === 'playing' && player.onGround && bikeFramesReady === bikeFram
 </script>
 </body>
 </html>
+
 
 
 
