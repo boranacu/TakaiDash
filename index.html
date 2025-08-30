@@ -74,6 +74,22 @@
     @boranacu
   </a>
 </div>
+    <div>Unique players: <span id="player-count">0</span></div>
+<script>
+async function registerPlayer() {
+  try {
+    const res = await fetch("/api/track", { method: "POST" });
+    const data = await res.json();
+    if (data.totalPlayers !== undefined) {
+      document.getElementById("player-count").textContent = data.totalPlayers;
+    }
+  } catch (err) {
+    console.error("Error tracking player:", err);
+  }
+}
+
+window.addEventListener("load", registerPlayer);
+</script>
 </div>
 </div>
 
@@ -410,3 +426,4 @@ if (state.phase === 'playing' && player.onGround && bikeFramesReady === bikeFram
 </script>
 </body>
 </html>
+
