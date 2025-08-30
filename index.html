@@ -100,10 +100,15 @@
   const LANE_DASH_W = 36;
 
   // ===== Assets =====
-  const bikeImg = new Image();
-  bikeImg.src = 'assets/bike.png'; // put your PNG here
-  let bikeReady = false;
-  bikeImg.onload = () => { bikeReady = true; };
+  const bikeFrames = [];
+let bikeFramesReady = 0;
+
+['assets/bike1.png', 'assets/bike2.png', 'assets/bike3.png'].forEach(src => {
+  const img = new Image();
+  img.src = src;
+  img.onload = () => { bikeFramesReady++; };
+  bikeFrames.push(img);
+});
 
   const bikeJumpImg = new Image();
   bikeJumpImg.src = 'assets/bike_jump.png';
@@ -134,6 +139,11 @@
   const coins = [];
   let spawnBombTimer = 0;
   let spawnCoinTimer = 0;
+
+  // ==== Animation state ====
+  let currentFrame = 0;
+  let frameTimer = 0;
+  const FRAME_INTERVAL = 120; // ms per frame
 
   // ===== Input =====
   let pressed = false;
@@ -242,6 +252,15 @@
       state.score += 0.1 * dtMs/16.67;
     }
 
+  // Update pedaling animation only when on ground
+if (state.phase === 'playing' && player.onGround && bikeFramesReady === bikeFrames.length) {
+  frameTimer += dtMs;
+  if (frameTimer >= FRAME_INTERVAL) {
+    frameTimer = 0;
+    currentFrame = (currentFrame + 1) % bikeFrames.length;
+  }
+}
+
     // Draw
     render(speed);
     requestAnimationFrame(loop);
@@ -318,12 +337,14 @@
   const targetH = 140;
   let img, ready;
 
-  if (!player.onGround && bikeJumpReady) {
-    img = bikeJumpImg; // jumping image
+  if (!player.onGround) {
+    // Show jumping image
+    img = bikeJumpImg;
     ready = bikeJumpReady;
   } else {
-    img = bikeImg;
-    ready = bikeReady;
+    // Pedaling animation on ground
+    img = bikeFrames[currentFrame];
+    ready = (bikeFramesReady === bikeFrames.length);
   }
 
   if (ready){
