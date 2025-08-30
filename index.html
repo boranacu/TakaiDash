@@ -150,7 +150,7 @@
     last = t;
 
     // world speed scales with score
-    const speed = BASE_SPEED + Math.min(8, state.score * 0.00015);
+    const speed = BASE_SPEED + Math.min(8, state.score * 0.0003);
 
     if (state.phase === 'playing'){
       state.time += dtMs;
@@ -345,6 +345,7 @@
 </script>
 </body>
 </html>
+
 
 
 
