@@ -120,6 +120,11 @@ let bikeFramesReady = 0;
   let coneReady = false;
   coneImg.onload = () => { coneReady = true; };
 
+  // ===== Background music =====
+const bgMusic = new Audio('assets/bg_music.mp3');
+bgMusic.loop = true;
+bgMusic.volume = 0.3; // 30% volume
+
   // ===== State =====
   const state = { phase:'ready', time:0, score:0, best: +(localStorage.getItem('bike_best')||0) };
   document.getElementById('best').textContent = state.best;
@@ -175,9 +180,19 @@ let bikeFramesReady = 0;
   function rand(min,max){ return Math.random()*(max-min)+min; }
 
   function startGame(reset=false){
-    state.phase = 'playing';
-    if (reset) { obstacles.length = 0; coins.length = 0; state.score = 0; state.time = 0; }
+  state.phase = 'playing';
+  if (reset) {
+    obstacles.length = 0;
+    coins.length = 0;
+    state.score = 0;
+    state.time = 0;
   }
+
+  // Start background music (only once per session)
+  if (bgMusic.paused) {
+    bgMusic.play().catch(err => console.log("Autoplay blocked:", err));
+  }
+}
 
   // ===== Spawn logic =====
   function spawnCone() {
@@ -410,6 +425,7 @@ if (state.phase === 'playing' && player.onGround && bikeFramesReady === bikeFram
 </script>
 </body>
 </html>
+
 
 
 
