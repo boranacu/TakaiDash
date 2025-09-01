@@ -289,6 +289,16 @@ if (state.phase === 'playing' && player.onGround && bikeFramesReady === bikeFram
       localStorage.setItem('bike_best', state.best);
       document.getElementById('best').textContent = state.best;
     }
+
+  // stop music
+  bgMusic.pause();
+  bgMusic.currentTime = 0;
+
+  if (state.score > state.best){
+    state.best = Math.floor(state.score);
+    localStorage.setItem('bike_best', state.best);
+    document.getElementById('best').textContent = state.best;
+  }
   }
 
   // ===== Render =====
@@ -425,6 +435,7 @@ if (state.phase === 'playing' && player.onGround && bikeFramesReady === bikeFram
 </script>
 </body>
 </html>
+
 
 
 
